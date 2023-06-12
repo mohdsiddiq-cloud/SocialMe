@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.android.fragments.LoginFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:layout_marginTop="150dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:textStyle="bold"
+        android:textSize="40sp"
+        android:textColor="@color/main"
+        />
+    <LinearLayout
+        android:id="@+id/ll2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
+
+        <EditText
+            android:id="@+id/emailla"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:layout_marginBottom="10dp"
+            android:hint="Email"
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/text_box"/>
+
+        <EditText
+            android:id="@+id/passwordla"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:hint="Password"
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/text_box"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forget Password?"
+            android:textStyle="bold"
+            android:textColor="@color/main"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:id="@+id/forgetps"/>
+
+
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_below="@+id/ll2"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SIGN IN WITH GOOGLE"
+        android:background="@drawable/button"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:textColor="@color/white"
+        android:layout_above="@+id/createla"
+        android:layout_marginBottom="16dp"
+        android:id="@+id/signinggl"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SIGN IN"
+        android:background="@drawable/button"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:textColor="@color/white"
+        android:layout_above="@+id/signinggl"
+        android:layout_marginBottom="16dp"
+        android:id="@+id/loginla"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/createla"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="78dp"
+        android:text="Create Account, Sign UP"
+        android:textStyle="bold"
+        android:textColor="@color/main"
+        />
+
+
+</RelativeLayout>

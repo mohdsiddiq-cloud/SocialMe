@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">socialMe</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_profile_fragment">hello_Profile_fragment</string>
+    <string name="hello_search_fragment">hello_search_fragment</string>
+    <string name="home_fragment">Home fragment</string>
+    <string name="hello_nofication_fragment">Hello Nofication Fragment</string>
+    <string name="hello_add_fragment">Hello Add Fragment</string>
+</resources>
