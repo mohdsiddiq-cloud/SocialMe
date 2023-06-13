@@ -189,6 +189,9 @@ public class LoginFragment extends Fragment {
                 map.put("email",account.getEmail());
                 map.put("profileImage",String.valueOf(account.getPhotoUrl()));
                 map.put("uid",auth.getUid());
+                map.put("following",0);
+                map.put("status"," ");
+                map.put("follower",0);
 
                 FirebaseFirestore.getInstance().collection("Users").document(user.getUid()).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override

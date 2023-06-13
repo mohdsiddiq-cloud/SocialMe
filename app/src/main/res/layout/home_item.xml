@@ -8,7 +8,7 @@
         android:layout_height="60dp"
         app:civ_border_color="#434343"
         app:civ_border_width="1dp"
-        android:background="@drawable/ic_baseline_account_circle_24"
+        android:src="@drawable/ic_baseline_account_circle_24"
         android:id="@+id/profileImg"
         android:layout_margin="8dp"/>
     <LinearLayout

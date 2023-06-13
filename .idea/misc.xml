@@ -12,6 +12,7 @@
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/drawable/ic_face.xml" value="0.27291666666666664" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/drawable/ic_home.xml" value="0.14166666666666666" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/drawable/ic_launcher_background.xml" value="0.26871794871794874" />
+        <entry key="..\:/my_android_project/socialMe/app/src/main/res/drawable/ic_menu.xml" value="0.14166666666666666" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/drawable/ic_notifination.xml" value="0.1453125" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/drawable/ic_person.xml" value="0.14166666666666666" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/drawable/ic_search.xml" value="0.14166666666666666" />
@@ -25,7 +26,7 @@
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/fragment_home.xml" value="0.23958333333333334" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/fragment_login.xml" value="0.1" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/fragment_notification.xml" value="0.12916666666666668" />
-        <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/fragment_profile.xml" value="0.23958333333333334" />
+        <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/fragment_profile.xml" value="0.264" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/fragment_search.xml" value="0.12916666666666668" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/home_item.xml" value="0.264" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.26871794871794874" />

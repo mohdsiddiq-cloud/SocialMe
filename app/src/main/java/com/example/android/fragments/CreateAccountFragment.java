@@ -127,6 +127,11 @@ public class CreateAccountFragment extends Fragment {
                                 map.put("email",textEmail);
                                 map.put("profileImage"," ");
                                 map.put("uid",auth.getUid());
+                                map.put("following",0);
+                                map.put("follower",0);
+                                map.put("status"," ");
+
+
 
                                 FirebaseFirestore.getInstance().collection("Users").document(user.getUid()).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
