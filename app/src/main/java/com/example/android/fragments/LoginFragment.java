@@ -69,6 +69,14 @@ public class LoginFragment extends Fragment {
 
 
     private void clickListner() {
+
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((fragmentReplaceActivity) getContext()).setFragment(new ForgetPasswordFragment());
+            }
+        });
+
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,7 +96,6 @@ public class LoginFragment extends Fragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             FirebaseUser user= auth.getCurrentUser();
-                            progressBar.setVisibility(View.GONE);
                             if(!user.isEmailVerified()){
                                 Toast.makeText(getContext(), "Please Verify your Email", Toast.LENGTH_SHORT).show();
                             }
@@ -99,6 +106,7 @@ public class LoginFragment extends Fragment {
                             String exception= task.getException().getMessage();
                             Toast.makeText(getContext(), "Error: "+exception, Toast.LENGTH_SHORT).show();
                         }
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
             }
@@ -125,7 +133,7 @@ public class LoginFragment extends Fragment {
         loginBtn=view.findViewById(R.id.loginla);
         googleSignInBtn=view.findViewById(R.id.signinggl);
         signUp=view.findViewById(R.id.createla);
-        forgotPassword=view.findViewById(R.id.createla);
+        forgotPassword=view.findViewById(R.id.forgetps);
         progressBar=view.findViewById(R.id.progressBar);
         auth= FirebaseAuth.getInstance();
 
