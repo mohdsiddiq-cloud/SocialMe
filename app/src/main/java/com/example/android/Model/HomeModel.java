@@ -1,18 +1,27 @@
 package com.example.android.Model;
 
+import com.google.firebase.firestore.ServerTimestamp;
+
+import java.util.Date;
+
 public class HomeModel {
-    private String userName, timeStamp, profileImage, postImage, uid;
+    private String userName, profileImage, imageUrl, uid,comments,description,id;
+    @ServerTimestamp
+    private Date timeStamp;
     private int likeCount;
     public HomeModel(){
 
     }
 
-    public HomeModel(String userName, String timeStamp, String profileImage, String postImage, String uid, int likeCount) {
+    public HomeModel(String userName, String profileImage, String imageUrl, String uid, String comments, String description, String id, Date timeStamp, int likeCount) {
         this.userName = userName;
-        this.timeStamp = timeStamp;
         this.profileImage = profileImage;
-        this.postImage = postImage;
+        this.imageUrl = imageUrl;
         this.uid = uid;
+        this.comments = comments;
+        this.description = description;
+        this.id = id;
+        this.timeStamp = timeStamp;
         this.likeCount = likeCount;
     }
 
@@ -24,14 +33,6 @@ public class HomeModel {
         this.userName = userName;
     }
 
-    public String getTimeStamp() {
-        return timeStamp;
-    }
-
-    public void setTimeStamp(String timeStamp) {
-        this.timeStamp = timeStamp;
-    }
-
     public String getProfileImage() {
         return profileImage;
     }
@@ -40,12 +41,12 @@ public class HomeModel {
         this.profileImage = profileImage;
     }
 
-    public String getPostImage() {
-        return postImage;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setPostImage(String postImage) {
-        this.postImage = postImage;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getUid() {
@@ -54,6 +55,38 @@ public class HomeModel {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Date getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(Date timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
     public int getLikeCount() {

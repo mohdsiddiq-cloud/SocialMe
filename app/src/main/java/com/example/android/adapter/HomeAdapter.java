@@ -42,10 +42,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder>{
     @Override
     public void onBindViewHolder(@NonNull HomeHolder holder, int position) {
         holder.userName.setText(list.get(position).getUserName());
-        holder.time.setText(list.get(position).getTimeStamp());
+        holder.time.setText(""+list.get(position).getTimeStamp());
         int count= list.get(position).getLikeCount();
         if(count==0){
-            holder.likeCount.setText(View.INVISIBLE);
+            holder.likeCount.setText("");
         }
         else if(count==1){
             holder.likeCount.setText(count+" like");
@@ -53,6 +53,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder>{
         else{
             holder.likeCount.setText(count+" likes");
         }
+        holder.description.setText(list.get(position).getDescription());
 
         Random random= new Random();
         int color= Color.argb(255,random.nextInt(256),random.nextInt(256),random.nextInt(256));
@@ -63,9 +64,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder>{
                 .timeout(6500)
                 .into(holder.profileImage);
         Glide.with(context.getApplicationContext())
-                .load(list.get(position).getPostImage())
+                .load(list.get(position).getImageUrl())
                 .placeholder(new ColorDrawable(color))
-                .timeout(6500)
+                .timeout(7000)
                 .into(holder.imageView);
     }
 
@@ -77,7 +78,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder>{
     static class HomeHolder extends RecyclerView.ViewHolder{
 
         private CircleImageView profileImage;
-        private TextView userName,time,likeCount;
+        private TextView userName,time,likeCount,description;
         private ImageView imageView;
         private ImageButton likeButton,shareButton,commentButton;
 
@@ -92,6 +93,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder>{
             likeButton = itemView.findViewById(R.id.likebtn);
             shareButton = itemView.findViewById(R.id.sharebtn);
             commentButton = itemView.findViewById(R.id.commentbtn);
+            description = itemView.findViewById(R.id.deschi);
         }
     }
 

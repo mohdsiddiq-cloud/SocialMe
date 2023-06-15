@@ -37,9 +37,9 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="220dp"
+        android:scaleType="centerCrop"
         android:layout_below="@+id/profileImg"
-        android:id="@+id/imageView"
-        android:background="#ff0000"/>
+        android:id="@+id/imageView" />
     <LinearLayout
         android:id="@+id/ll1"
         android:layout_width="match_parent"
@@ -80,6 +80,16 @@
         android:paddingEnd="8dp"
         android:layout_marginBottom="8dp"
         />
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/deschi"
+        android:text="descrip"
+        android:layout_below="@+id/likecount"
+        android:textStyle="bold"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:layout_marginBottom="8dp"
+        />
 
 </RelativeLayout>

@@ -1,28 +1,29 @@
 package com.example.android.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.TintInfo;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.android.Model.HomeModel;
 import com.example.android.adapter.HomeAdapter;
 import com.example.android.socialme.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.ktx.Firebase;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,6 @@ public class HomeFragment extends Fragment {
     HomeAdapter homeAdapter;
     private List<HomeModel> list;
     private FirebaseUser user;
-    DocumentReference reference;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -50,21 +50,51 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         init(view);
-        reference = FirebaseFirestore.getInstance().collection("Posts").document(user.getUid());
+
 
         list=new ArrayList<>();
         homeAdapter=new HomeAdapter(list,getContext());
         recyclerView.setAdapter(homeAdapter);
         loadDataFromFirestore();
-
     }
 
     private void loadDataFromFirestore() {
-        list.add(new HomeModel("Mohd Siddiq","6/13/2023","","","123456",23));
-        list.add(new HomeModel("Wasim Raja","6/13/2023","","","123457",32));
-        list.add(new HomeModel("Hamza khan","6/13/2023","","","123456",23));
-        list.add(new HomeModel("Aditya Raj","6/13/2023","","","123456",89));
-        homeAdapter.notifyDataSetChanged();
+        if (user == null) {
+            Log.d("Error: ", "User is null");
+            return;
+        }
+        CollectionReference reference=FirebaseFirestore.getInstance().collection("Users")
+                .document(user.getUid())
+                .collection("Post Images");
+
+        reference.addSnapshotListener(((value, error) -> {
+            if(error!=null){
+                Log.e("Error: ",error.getMessage());
+                return;
+            }
+            if(value==null)
+                return;
+            list.clear();
+            for(QueryDocumentSnapshot snapshot: value){
+                if(!snapshot.exists())
+                    return;
+                HomeModel model= snapshot.toObject(HomeModel.class);
+                list.add(new HomeModel(
+                        model.getUserName(),
+                        model.getProfileImage(),
+                        model.getImageUrl(),
+                        model.getUid(),
+                        model.getComments(),
+                        model.getDescription(),
+                        model.getId(),
+                        model.getTimeStamp(),
+                        model.getLikeCount()
+                ));
+            }
+            homeAdapter.notifyDataSetChanged();
+        }));
+
+
     }
 
     private void init(View view) {
