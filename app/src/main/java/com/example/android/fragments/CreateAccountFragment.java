@@ -130,6 +130,7 @@ public class CreateAccountFragment extends Fragment {
                                 map.put("following",0);
                                 map.put("follower",0);
                                 map.put("status"," ");
+                                map.put("search",textName.toLowerCase());
 
 
 

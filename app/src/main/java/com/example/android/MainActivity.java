@@ -6,10 +6,11 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import com.example.android.adapter.ViewPagerAdapter;
+import com.example.android.fragments.SearchFragment;
 import com.example.android.socialme.R;
 import com.google.android.material.tabs.TabLayout;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SearchFragment.OnDataPass {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -117,5 +118,19 @@ public class MainActivity extends AppCompatActivity {
         tabLayout=findViewById(R.id.tabLayout);
         viewPager=findViewById(R.id.viewPage);
 
+    }
+
+    @Override
+    public void change(int position) {
+        viewPager.setCurrentItem(position);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(viewPager.getCurrentItem()==4){
+            viewPager.setCurrentItem(0);
+        }
+        else
+        super.onBackPressed();
     }
 }
