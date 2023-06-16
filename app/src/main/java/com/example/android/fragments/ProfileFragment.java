@@ -2,6 +2,8 @@ package com.example.android.fragments;
 
 import static android.app.Activity.RESULT_OK;
 
+import static com.example.android.fragments.HomeFragment.LIST_SIZE;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -138,6 +140,7 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
+        postCount.setText(""+LIST_SIZE);
     }
 
     private void init(View view) {
@@ -169,7 +172,7 @@ public class ProfileFragment extends Fragment {
 
         }
         DocumentReference reference = FirebaseFirestore.getInstance().collection("Users").document(uid);
-        Query query = reference.collection("Images");
+        Query query = reference.collection("Post Images");
         FirestoreRecyclerOptions<PostImageModel> options = new FirestoreRecyclerOptions.Builder<PostImageModel>()
                 .setQuery(query, PostImageModel.class)
                 .build();
@@ -178,7 +181,7 @@ public class ProfileFragment extends Fragment {
             @NonNull
             @Override
             public PostImageHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(getContext()).inflate(R.layout.profile_image_item, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.profile_image_item, parent, false);
                 return new PostImageHolder(view);
             }
 
@@ -199,7 +202,7 @@ public class ProfileFragment extends Fragment {
         private ImageView imageView;
         public PostImageHolder(@NonNull View itemView) {
             super(itemView);
-            imageView.findViewById(R.id.ImageView1);
+            imageView=itemView.findViewById(R.id.ImageView1);
         }
     }
 

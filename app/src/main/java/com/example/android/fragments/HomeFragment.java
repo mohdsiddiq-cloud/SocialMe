@@ -34,6 +34,7 @@ public class HomeFragment extends Fragment {
     HomeAdapter homeAdapter;
     private List<HomeModel> list;
     private FirebaseUser user;
+    public static int LIST_SIZE=0;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -92,6 +93,7 @@ public class HomeFragment extends Fragment {
                 ));
             }
             homeAdapter.notifyDataSetChanged();
+            LIST_SIZE=list.size();
         }));
 
 
