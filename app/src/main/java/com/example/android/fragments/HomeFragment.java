@@ -31,7 +31,7 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
-    HomeAdapter homeAdapter;
+    public HomeAdapter homeAdapter;
     private List<HomeModel> list;
     private FirebaseUser user;
     public static int LIST_SIZE=0;
@@ -52,11 +52,8 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         init(view);
 
-
-        list=new ArrayList<>();
-        homeAdapter=new HomeAdapter(list,getContext());
-        recyclerView.setAdapter(homeAdapter);
         loadDataFromFirestore();
+
     }
 
     private void loadDataFromFirestore() {
@@ -95,8 +92,6 @@ public class HomeFragment extends Fragment {
             homeAdapter.notifyDataSetChanged();
             LIST_SIZE=list.size();
         }));
-
-
     }
 
     private void init(View view) {
@@ -106,7 +101,9 @@ public class HomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
+        list=new ArrayList<>();
+        homeAdapter=new HomeAdapter(list,getContext());
+        recyclerView.setAdapter(homeAdapter);
         FirebaseAuth auth= FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
     }

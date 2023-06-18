@@ -117,20 +117,26 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
 
         tabLayout=findViewById(R.id.tabLayout);
         viewPager=findViewById(R.id.viewPage);
-
     }
 
-    @Override
-    public void change(int position) {
-        viewPager.setCurrentItem(position);
-    }
+
 
     @Override
     public void onBackPressed() {
         if(viewPager.getCurrentItem()==4){
             viewPager.setCurrentItem(0);
+            isSearchUser=false;
         }
         else
         super.onBackPressed();
+    }
+    public static String User_ID;
+    public static boolean isSearchUser= false;
+
+    @Override
+    public void change(String uid) {
+        User_ID= uid;
+        isSearchUser=true;
+        viewPager.setCurrentItem(4);
     }
 }

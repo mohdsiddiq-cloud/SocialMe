@@ -67,6 +67,7 @@
         android:layout_margin="14dp"
         />
         <ImageButton
+            android:visibility="gone"
             android:layout_width="34dp"
             android:layout_height="34dp"
             android:src="@drawable/ic_edit"
@@ -213,7 +214,9 @@
 
 
         <Button
-            android:visibility="gone"
+            android:layout_below="@+id/followlayout"
+            android:layout_marginTop="12dp"
+            android:visibility="visible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Follow"

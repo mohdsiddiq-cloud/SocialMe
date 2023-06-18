@@ -30,6 +30,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class SearchFragment extends Fragment {
 
     SearchView searchView;
@@ -39,7 +40,7 @@ public class SearchFragment extends Fragment {
     CollectionReference reference;
     OnDataPass onDataPass;
     public interface OnDataPass{
-        void change(int position);
+        void change(String uid);
     }
 
     @Override
@@ -72,8 +73,8 @@ public class SearchFragment extends Fragment {
     private void clickListener() {
         adapter.OnUserClicked(new UserAdapter.OnUserClicked() {
             @Override
-            public void onClicked(int position, String uid) {
-                onDataPass.change(4);
+            public void onClicked(String uid) {
+                onDataPass.change(uid);
             }
         });
     }
@@ -139,4 +140,5 @@ public class SearchFragment extends Fragment {
         adapter = new UserAdapter(list);
         recyclerView.setAdapter(adapter);
     }
+    
 }

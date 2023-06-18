@@ -27,7 +27,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CreateAccountFragment extends Fragment {
@@ -122,15 +124,19 @@ public class CreateAccountFragment extends Fragment {
                             }
 
                             private void uploadUser(FirebaseUser user, String textName, String textEmail) {
+                                List<String> list=new ArrayList<>();
+                                List<String> list1=new ArrayList<>();
+
                                 Map<String,Object> map=new HashMap<String, Object>();
                                 map.put("name",textName);
                                 map.put("email",textEmail);
                                 map.put("profileImage"," ");
                                 map.put("uid",auth.getUid());
-                                map.put("following",0);
-                                map.put("follower",0);
+                                map.put("following",list1);
+                                map.put("follower",list);
                                 map.put("status"," ");
                                 map.put("search",textName.toLowerCase());
+
 
 
 

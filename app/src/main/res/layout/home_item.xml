@@ -9,12 +9,12 @@
         app:civ_border_color="#434343"
         app:civ_border_width="1dp"
         android:src="@drawable/ic_baseline_account_circle_24"
-        android:id="@+id/profileImg"
+        android:id="@+id/profileImg5"
         android:layout_margin="8dp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_toRightOf="@+id/profileImg"
+        android:layout_toRightOf="@+id/profileImg5"
         android:gravity="center_vertical"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="220dp"
         android:scaleType="centerCrop"
-        android:layout_below="@+id/profileImg"
+        android:layout_below="@+id/profileImg5"
         android:id="@+id/imageView" />
     <LinearLayout
         android:id="@+id/ll1"
