@@ -75,8 +75,8 @@ public class ProfileFragment extends Fragment{
     private FirestoreRecyclerAdapter<PostImageModel, PostImageHolder> adapter;
     private ImageButton editProfileButton;
     boolean isFollowed;
-    DocumentReference userRef;
-    List<Object> followerList,followingList;
+    DocumentReference userRef,myRef;
+    List<Object> followerList,followingList,followingList_2;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -94,9 +94,13 @@ public class ProfileFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
         init(view);
 
+        myRef= FirebaseFirestore.getInstance().collection("Users").document(user.getUid());
+
         if(isSearchUser){
             userUID = User_ID;
             isMyProfile= false;
+
+            loadData();
         }
         else{
             isMyProfile= true;
@@ -110,9 +114,12 @@ public class ProfileFragment extends Fragment{
         else{
             editProfileButton.setVisibility(View.GONE);
             followBtn.setVisibility(View.VISIBLE);
-            countLayout.setVisibility(View.GONE);
+//            countLayout.setVisibility(View.GONE);
         }
+
+
         userRef= FirebaseFirestore.getInstance().collection("Users").document(userUID);
+
 
         loadBasicData();
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
@@ -122,43 +129,96 @@ public class ProfileFragment extends Fragment{
         clickListner();
     }
 
+    private void loadData() {
+        myRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if(error!=null){
+                    Log.e("Tag_b",error.getMessage() );
+                    return;
+                }
+                if(value==null  || !value.exists()){
+                    return;
+                }
+                followingList_2 = (List<Object>) value.get("following");
+
+            }
+        });
+    }
+
     private void clickListner() {
 
         followBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(isFollowed){
-                    followingList.remove(userUID);
+                    followerList.remove(user.getUid());
+                    followingList_2.remove(userUID);
+
+                    final Map<String,Object> map_2=new HashMap<>();
+                    map_2.put("following",followingList_2);
+
                     Map<String,Object> map=new HashMap<>();
-                    map.put("following",followingList);
+                    map.put("follower",followerList);
 
                     userRef.update(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){
                                 followBtn.setText("Follow");
+                                myRef.update(map_2).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            Toast.makeText(getContext(), "UnFollowed", Toast.LENGTH_SHORT).show();
+                                            isFollowed=false;
+                                        }
+                                        else{
+                                            Log.e("Tag_3", task.getException().getMessage() );
+                                        }
+                                    }
+                                });
                             }
                             else{
                                 Log.e("Tag",""+task.getException().getMessage());
                             }
                         }
                     });
+
                 }
                 else{
-                    followingList.add(userUID);
+                    followerList.add(user.getUid());
+                    followingList_2.add(userUID);
+
+                    Map<String,Object> map_2=new HashMap<>();
+                    map_2.put("following",followingList_2);
+
                     Map<String,Object> map=new HashMap<>();
-                    map.put("following",followingList);
+                    map.put("follower",followerList);
                     userRef.update(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){
                                 followBtn.setText("UnFollow");
+                                myRef.update(map_2).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            Toast.makeText(getContext(), "Followed", Toast.LENGTH_SHORT).show();
+                                            isFollowed=true;
+                                        }
+                                        else{
+                                            Log.e("Tag_4", task.getException().getMessage() );
+                                        }
+                                    }
+                                });
                             }
                             else{
                                 Log.e("Tag",""+task.getException().getMessage());
                             }
                         }
                     });
+
                 }
             }
         });
@@ -180,6 +240,7 @@ public class ProfileFragment extends Fragment{
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 if(error != null){
+                    Log.e("tag_0",error.getMessage() );
                     return;
                 }
                 assert value!=null;
@@ -192,8 +253,8 @@ public class ProfileFragment extends Fragment{
                     toolbarName.setText(textname);
                     status.setText(textstatus);
 
-                     followerList = (List<Object>) value.getDate("follower");
-                     followingList = (List<Object>) value.getDate("following");
+                     followerList = (List<Object>) value.get("follower");
+                     followingList = (List<Object>) value.get("following");
 
 
                     followersCount.setText(""+followerList.size());
@@ -204,7 +265,7 @@ public class ProfileFragment extends Fragment{
                             .placeholder(R.drawable.ic_baseline_account_circle_24)
                             .timeout(6500)
                             .into(profileImage);
-                    if(followingList.contains(userUID)){
+                    if(followerList.contains(user.getUid())){
                         followBtn.setText("UnFollow");
                         isFollowed=true;
                     }
