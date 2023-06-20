@@ -1,14 +1,26 @@
 package com.example.android;
 
+import static com.example.android.utils.Constants.PREF_DIRECTORY;
+import static com.example.android.utils.Constants.PREF_NAME;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import com.example.android.adapter.ViewPagerAdapter;
 import com.example.android.fragments.SearchFragment;
 import com.example.android.socialme.R;
 import com.google.android.material.tabs.TabLayout;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class MainActivity extends AppCompatActivity implements SearchFragment.OnDataPass {
 
@@ -21,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         init();
         addTabs();
     }
@@ -31,7 +42,13 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_search));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_add));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_baseline_favorite_border_24));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_person));
+
+        SharedPreferences sharedPreferences= getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        String directory = sharedPreferences.getString(PREF_DIRECTORY,"");
+        Bitmap bitmap= loadProfileImage(directory);
+        Drawable drawable= new BitmapDrawable(getResources(),bitmap);
+
+        tabLayout.addTab(tabLayout.newTab().setIcon(drawable));
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
@@ -59,9 +76,9 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
                      case 3:
                          tabLayout.getTabAt(3).setIcon(R.drawable.ic_baseline_favorite_24);
                          break;
-                     case 4:
-                         tabLayout.getTabAt(4).setIcon(R.drawable.ic_person);
-                         break;
+//                     case 4:
+//                         tabLayout.getTabAt(4).setIcon(R.drawable.ic_person);
+//                         break;
 
                  }
             }
@@ -81,9 +98,9 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
                     case 3:
                         tabLayout.getTabAt(3).setIcon(R.drawable.ic_baseline_favorite_border_24);
                         break;
-                    case 4:
-                        tabLayout.getTabAt(4).setIcon(R.drawable.ic_person);
-                        break;
+//                    case 4:
+//                        tabLayout.getTabAt(4).setIcon(R.drawable.ic_person);
+//                        break;
 
                 }
             }
@@ -103,13 +120,23 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
                     case 3:
                         tabLayout.getTabAt(3).setIcon(R.drawable.ic_baseline_favorite_24);
                         break;
-                    case 4:
-                        tabLayout.getTabAt(4).setIcon(R.drawable.ic_person);
-                        break;
+//                    case 4:
+//                        tabLayout.getTabAt(4).setIcon(R.drawable.ic_person);
+//                        break;
 
                 }
             }
         });
+    }
+
+    private Bitmap loadProfileImage(String directory){
+        try {
+            File file= new File(directory, "profile.png");
+            return BitmapFactory.decodeStream(new FileInputStream(file));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private void init() {

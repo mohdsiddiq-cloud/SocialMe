@@ -4,9 +4,18 @@ import static android.app.Activity.RESULT_OK;
 
 import static com.example.android.MainActivity.User_ID;
 import static com.example.android.MainActivity.isSearchUser;
-import static com.example.android.fragments.HomeFragment.LIST_SIZE;
+import static com.example.android.utils.Constants.PREF_DIRECTORY;
+import static com.example.android.utils.Constants.PREF_NAME;
+import static com.example.android.utils.Constants.PREF_STORED;
+import static com.example.android.utils.Constants.PREF_URL;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -32,6 +41,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.android.MainActivity;
 import com.example.android.Model.PostImageModel;
 import com.example.android.socialme.R;
@@ -56,6 +69,10 @@ import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +94,7 @@ public class ProfileFragment extends Fragment{
     boolean isFollowed;
     DocumentReference userRef,myRef;
     List<Object> followerList,followingList,followingList_2;
+    int count;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -263,6 +281,19 @@ public class ProfileFragment extends Fragment{
                     Glide.with(getContext().getApplicationContext())
                             .load(textprofileURL)
                             .placeholder(R.drawable.ic_baseline_account_circle_24)
+                            .listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    Bitmap bitmap = ((BitmapDrawable) resource).getBitmap();
+                                    storeProfileImage(bitmap,textprofileURL);
+                                    return false;
+                                }
+                            })
                             .timeout(6500)
                             .into(profileImage);
                     if(followerList.contains(user.getUid())){
@@ -277,8 +308,46 @@ public class ProfileFragment extends Fragment{
 
             }
         });
-        postCount.setText(""+LIST_SIZE);
+
     }
+
+    private void storeProfileImage(Bitmap bitmap, String url){
+
+        SharedPreferences preferences = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        boolean isStored = preferences.getBoolean(PREF_STORED,false);
+
+        String urlString = preferences.getString(PREF_URL,"");
+        SharedPreferences.Editor editor= preferences.edit();
+        if(!isStored && urlString.equals(url))
+            return;
+        if(isSearchUser)
+            return;
+        ContextWrapper contextWrapper = new ContextWrapper(getContext().getApplicationContext());
+        File directory = contextWrapper.getDir("image_data", Context.MODE_PRIVATE);
+
+        if(!directory.exists()){
+            directory.mkdir();
+        }
+        File path = new File(directory, "profile.png");
+        FileOutputStream fileOutputStream=null;
+        try {
+            fileOutputStream = new FileOutputStream(path);
+            bitmap.compress(Bitmap.CompressFormat.PNG,100,fileOutputStream);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                fileOutputStream.close();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        editor.putBoolean(PREF_STORED,true);
+        editor.putString(PREF_URL,url);
+        editor.putString(PREF_DIRECTORY, directory.getAbsolutePath());
+        editor.apply();
+    }
+
 
     private void init(View view) {
 
@@ -323,8 +392,18 @@ public class ProfileFragment extends Fragment{
                         .load(model.getImageUrl())
                         .timeout(6500)
                         .into(holder.imageView);
+                count= getItemCount();
+                postCount.setText(""+ count);
+            }
+
+            @Override
+            public int getItemCount() {
+                return super.getItemCount();
+
             }
         };
+
+
 
 
     }

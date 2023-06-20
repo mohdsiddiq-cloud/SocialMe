@@ -5,7 +5,7 @@ import com.google.firebase.firestore.ServerTimestamp;
 import java.util.Date;
 
 public class HomeModel {
-    private String userName, profileImage, imageUrl, uid,comments,description,id;
+    private String name, profileImage, imageUrl, uid,comments,description,id;
     @ServerTimestamp
     private Date timeStamp;
     private int likeCount;
@@ -13,8 +13,8 @@ public class HomeModel {
 
     }
 
-    public HomeModel(String userName, String profileImage, String imageUrl, String uid, String comments, String description, String id, Date timeStamp, int likeCount) {
-        this.userName = userName;
+    public HomeModel(String name, String profileImage, String imageUrl, String uid, String comments, String description, String id, Date timeStamp, int likeCount) {
+        this.name = name;
         this.profileImage = profileImage;
         this.imageUrl = imageUrl;
         this.uid = uid;
@@ -26,11 +26,11 @@ public class HomeModel {
     }
 
     public String getUserName() {
-        return userName;
+        return name;
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.name = userName;
     }
 
     public String getProfileImage() {
