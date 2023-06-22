@@ -1,6 +1,7 @@
 package com.example.android.fragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -103,8 +104,10 @@ public class CreateAccountFragment extends Fragment {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
                                     FirebaseUser user= auth.getCurrentUser();
+                                    String image="https://www.google.com/imgres?imgurl=https%3A%2F%2Fi.pinimg.com%2F474x%2F7b%2Fc6%2Ffd%2F7bc6fd1adc9df8f49353a40d716a0a7d.jpg&tbnid=vYqe2N44TdmxsM&vet=12ahUKEwjS4c62zNf_AhVzsWMGHZADBxIQMyg0egQIARBr..i&imgrefurl=https%3A%2F%2Fin.pinterest.com%2Fpin%2Fbusiness-men-silhouette-png-free-vector-business-men-icon-business-icons-avatar-bussiness-png-image-for-free-download--1096485840502070552%2F&docid=0px2bA8_axbB2M&w=360&h=360&q=person%20vector&ved=2ahUKEwjS4c62zNf_AhVzsWMGHZADBxIQMyg0egQIARBr";
                                     UserProfileChangeRequest.Builder request= new UserProfileChangeRequest.Builder();
                                     request.setDisplayName(textName);
+                                    request.setPhotoUri(Uri.parse(image));
                                     user.updateProfile(request.build());
                                     user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override

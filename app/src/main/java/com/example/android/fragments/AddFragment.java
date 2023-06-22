@@ -94,7 +94,6 @@ public class AddFragment extends Fragment {
         clickListener();
 
     }
-
     private void clickListener() {
         adapter.SendImage(new GalleryAdapter.SendImage() {
             @Override
@@ -140,17 +139,18 @@ public class AddFragment extends Fragment {
                 .document(user.getUid()).collection("Post Images");
 
         String id=reference.document().getId();
-
         String description = desc.getText().toString();
+
+        List<String> list=new ArrayList<>();
+
         Map<String,Object> map = new HashMap<>();
         map.put("id",id);
         map.put("description",description);
         map.put("imageUrl",imageURL);
         map.put("timeStamp", FieldValue.serverTimestamp());
-        map.put("userName", user.getDisplayName());
+        map.put("name", user.getDisplayName());
         map.put("profileImage", String.valueOf(user.getPhotoUrl()));
-        map.put("likeCount",0);
-        map.put("comments","");
+        map.put("likes",list);
         map.put("uid",user.getUid());
 
         reference.document(id).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -211,6 +211,7 @@ public class AddFragment extends Fragment {
                             if(file.exists()){
                                 File[] files= file.listFiles();
                                 assert files!=null;
+                                list.clear();
                                 for(File file1:files){
                                     if(file1.getAbsolutePath().endsWith(".jpg") || file1.getAbsolutePath().endsWith(".png")){
                                         list.add(new GalleryImage(Uri.fromFile(file1)));

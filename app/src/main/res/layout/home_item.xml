@@ -25,7 +25,7 @@
             android:id="@+id/namehi"
             android:textStyle="bold"
             android:textColor="#000"
-            android:text="UserName"/>
+           />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,12 +47,13 @@
         android:layout_below="@+id/imageView"
         android:orientation="horizontal">
 
-        <ImageButton
+        <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/likebtn"
             android:layout_margin="8dp"
-            android:background="@drawable/ic_baseline_favorite_border_24"/>
+            android:checked="true"
+            android:button="@drawable/heart_check"/>
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -68,12 +69,10 @@
             android:background="@drawable/ic_send"
             android:rotation="-30"/>
     </LinearLayout>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/likecount"
-        android:text="100 likes"
+        android:id="@+id/deschi"
         android:layout_below="@+id/ll1"
         android:textStyle="bold"
         android:paddingStart="8dp"
@@ -83,13 +82,20 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/deschi"
-        android:text="descrip"
-        android:layout_below="@+id/likecount"
+        android:id="@+id/likecount"
+        android:layout_below="@+id/deschi"
         android:textStyle="bold"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
         android:layout_marginBottom="8dp"
         />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/likecount"
+        android:text="View all comment"
+        android:visibility="gone"
+        android:padding="8dp"
+        android:id="@+id/commentTv"/>
 
 </RelativeLayout>

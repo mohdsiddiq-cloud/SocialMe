@@ -281,6 +281,7 @@ public class ProfileFragment extends Fragment{
                     Glide.with(getContext().getApplicationContext())
                             .load(textprofileURL)
                             .placeholder(R.drawable.ic_baseline_account_circle_24)
+                            .circleCrop()
                             .listener(new RequestListener<Drawable>() {
                                 @Override
                                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {

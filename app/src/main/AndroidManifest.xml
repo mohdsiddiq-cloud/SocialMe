@@ -20,6 +20,10 @@
         android:theme="@style/Theme.SocialMe"
         tools:ignore="AllowBackup">
         <activity
+            android:name="com.example.android.PostViewActivity"
+            android:exported="false" />
+
+        <activity
             android:name="com.example.android.SplashActivity"
             android:exported="true">
             <intent-filter>
