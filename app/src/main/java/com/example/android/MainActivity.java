@@ -17,16 +17,21 @@ import com.example.android.adapter.ViewPagerAdapter;
 import com.example.android.fragments.SearchFragment;
 import com.example.android.socialme.R;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements SearchFragment.OnDataPass {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
-
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     ViewPagerAdapter pagerAdapter;
 
     @Override
@@ -36,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
         init();
         addTabs();
     }
-
     private void addTabs() {
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_home));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_search));
@@ -76,9 +80,9 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
                      case 3:
                          tabLayout.getTabAt(3).setIcon(R.drawable.ic_baseline_favorite_24);
                          break;
-//                     case 4:
-//                         tabLayout.getTabAt(4).setIcon(R.drawable.ic_person);
-//                         break;
+                     case 4:
+                         tabLayout.getTabAt(4).setIcon(R.drawable.ic_person);
+                         break;
 
                  }
             }
@@ -98,9 +102,9 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
                     case 3:
                         tabLayout.getTabAt(3).setIcon(R.drawable.ic_baseline_favorite_border_24);
                         break;
-//                    case 4:
-//                        tabLayout.getTabAt(4).setIcon(R.drawable.ic_person);
-//                        break;
+                    case 4:
+                        tabLayout.getTabAt(4).setIcon(R.drawable.ic_person);
+                        break;
 
                 }
             }
@@ -120,9 +124,9 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
                     case 3:
                         tabLayout.getTabAt(3).setIcon(R.drawable.ic_baseline_favorite_24);
                         break;
-//                    case 4:
-//                        tabLayout.getTabAt(4).setIcon(R.drawable.ic_person);
-//                        break;
+                    case 4:
+                        tabLayout.getTabAt(4).setIcon(R.drawable.ic_person);
+                        break;
 
                 }
             }
@@ -165,5 +169,28 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
         User_ID= uid;
         isSearchUser=true;
         viewPager.setCurrentItem(4);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateStatus(true);
+    }
+
+    @Override
+    protected void onPause() {
+        updateStatus(false);
+        super.onPause();
+    }
+
+    void updateStatus(boolean status) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("online", status);
+
+        FirebaseFirestore.getInstance()
+                .collection("Users")
+                .document(user.getUid())
+                .update(map);
     }
 }

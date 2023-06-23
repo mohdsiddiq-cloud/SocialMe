@@ -1,15 +1,13 @@
 package com.example.android.fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,7 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.android.Model.HomeModel;
 import com.example.android.adapter.HomeAdapter;
-import com.example.android.fragmentReplaceActivity;
+import com.example.android.chat.ChatUserActivity;
 import com.example.android.socialme.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -39,7 +37,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 
 public class HomeFragment extends Fragment {
@@ -48,6 +45,8 @@ public class HomeFragment extends Fragment {
     private List<HomeModel> list;
     private FirebaseUser user;
     private final MutableLiveData<Integer> commentCount= new MutableLiveData<>();
+    RecyclerView storyRecyclerView;
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -108,6 +107,12 @@ public class HomeFragment extends Fragment {
 
             }
         });
+        view.findViewById(R.id.sendButton).setOnClickListener(v -> {
+
+            Intent intent = new Intent(getActivity(), ChatUserActivity.class);
+            startActivity(intent);
+
+        });
     }
 
 
@@ -143,7 +148,7 @@ public class HomeFragment extends Fragment {
                             }
                             if(value1==null)
                                 return;
-                            list.clear();
+
                             for (QueryDocumentSnapshot snapshot : value1) {
                                 snapshot.getReference().collection("Post Images")
                                         .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -155,6 +160,7 @@ public class HomeFragment extends Fragment {
                                                 }
                                                 if(value2==null)
                                                     return;
+                                                list.clear();
 
                                                 for (QueryDocumentSnapshot snapshot2 : value2) {
                                                     if (!snapshot2.exists())
@@ -198,6 +204,7 @@ public class HomeFragment extends Fragment {
 
     }
 
+
     private void init(View view) {
         Toolbar toolbar=view.findViewById(R.id.toolbar);
         if(getActivity()!=null)
@@ -205,6 +212,12 @@ public class HomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        storyRecyclerView= view.findViewById(R.id.storiesRecyclerView);
+        storyRecyclerView.setHasFixedSize(true);
+        storyRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,true));
+
+
         FirebaseAuth auth= FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
 

@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,6 +48,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.android.MainActivity;
 import com.example.android.Model.PostImageModel;
+import com.example.android.chat.ChatActivity;
 import com.example.android.socialme.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -56,12 +58,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.ktx.Firebase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -73,6 +78,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,7 +89,7 @@ public class ProfileFragment extends Fragment{
 
     private TextView name,toolbarName,status,followingCount,followersCount,postCount;
     private CircleImageView profileImage;
-    private Button followBtn;
+    private Button followBtn,startChatBtn;
     private RecyclerView recyclerView;
     private FirebaseUser user;
     boolean isMyProfile = true;
@@ -117,7 +123,6 @@ public class ProfileFragment extends Fragment{
         if(isSearchUser){
             userUID = User_ID;
             isMyProfile= false;
-
             loadData();
         }
         else{
@@ -128,11 +133,13 @@ public class ProfileFragment extends Fragment{
             editProfileButton.setVisibility(View.VISIBLE);
             followBtn.setVisibility(View.GONE);
             countLayout.setVisibility(View.VISIBLE);
+            startChatBtn.setVisibility(View.GONE);
         }
         else{
             editProfileButton.setVisibility(View.GONE);
             followBtn.setVisibility(View.VISIBLE);
 //            countLayout.setVisibility(View.GONE);
+
         }
 
 
@@ -205,6 +212,8 @@ public class ProfileFragment extends Fragment{
 
                 }
                 else{
+
+                    createNotification();
                     followerList.add(user.getUid());
                     followingList_2.add(userUID);
 
@@ -250,6 +259,97 @@ public class ProfileFragment extends Fragment{
                         .start(getContext(),ProfileFragment.this);
             }
         });
+
+        startChatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                queryChat();
+            }
+        });
+    }
+    void queryChat() {
+
+        assert getContext() != null;
+
+
+        CollectionReference reference = FirebaseFirestore.getInstance().collection("Messages");
+        reference.whereArrayContains("uid", userUID)
+                .get().addOnCompleteListener(task -> {
+
+            if (task.isSuccessful()) {
+
+                QuerySnapshot snapshot = task.getResult();
+
+                if (snapshot.isEmpty()) {
+                    startChat();
+                } else {
+                    //get chatId and pass
+
+                    for (DocumentSnapshot snapshotChat : snapshot) {
+
+                        Intent intent = new Intent(getActivity(), ChatActivity.class);
+                        intent.putExtra("uid", userUID);
+                        intent.putExtra("id", snapshotChat.getId()); //return doc id
+                        startActivity(intent);
+                    }
+
+
+                }
+
+            }
+
+
+        });
+
+    }
+    void startChat() {
+
+
+        CollectionReference reference = FirebaseFirestore.getInstance().collection("Messages");
+
+        List<String> list = new ArrayList<>();
+
+        list.add(0, user.getUid());
+        list.add(1, userUID);
+
+        String pushID = reference.document().getId();
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", pushID);
+        map.put("lastMessage", "Hi");
+        map.put("time", FieldValue.serverTimestamp());
+        map.put("uid", list);
+
+        reference.document(pushID).update(map).addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                reference.document(pushID).set(map);
+            }
+        });
+
+        CollectionReference messageRef = FirebaseFirestore.getInstance()
+                .collection("Messages")
+                .document(pushID)
+                .collection("Messages");
+
+        String messageID = messageRef.document().getId();
+
+        Map<String, Object> messageMap = new HashMap<>();
+        messageMap.put("id", messageID);
+        messageMap.put("message", "Hi");
+        messageMap.put("senderID", user.getUid());
+        messageMap.put("time", FieldValue.serverTimestamp());
+
+        messageRef.document(messageID).set(messageMap);
+
+        new Handler().postDelayed(() -> {
+
+            Intent intent = new Intent(getActivity(), ChatActivity.class);
+            intent.putExtra("uid", userUID);
+            intent.putExtra("id", pushID);
+            startActivity(intent);
+
+        }, 3000);
+
     }
 
     private void loadBasicData() {
@@ -300,10 +400,13 @@ public class ProfileFragment extends Fragment{
                     if(followerList.contains(user.getUid())){
                         followBtn.setText("UnFollow");
                         isFollowed=true;
+                        startChatBtn.setVisibility(View.VISIBLE);
+
                     }
                     else{
                         isFollowed=false;
                         followBtn.setText("Follow");
+                        startChatBtn.setVisibility(View.GONE);
                     }
                 }
 
@@ -367,6 +470,7 @@ public class ProfileFragment extends Fragment{
         recyclerView=view.findViewById(R.id.recyclerViewpf);
         countLayout= view.findViewById(R.id.followlayout);
         editProfileButton= view.findViewById(R.id.editProfileImage);
+        startChatBtn= view.findViewById(R.id.startChatBtn);
         FirebaseAuth auth= FirebaseAuth.getInstance();
         user=auth.getCurrentUser();
     }
@@ -483,5 +587,21 @@ public class ProfileFragment extends Fragment{
                 }
             }
         });
+    }
+
+    void createNotification() {
+
+        CollectionReference reference = FirebaseFirestore.getInstance().collection("Notifications");
+
+        String id = reference.document().getId();
+        Map<String, Object> map = new HashMap<>();
+        map.put("time", FieldValue.serverTimestamp());
+        map.put("notification", user.getDisplayName() + " followed you.");
+        map.put("id", id);
+        map.put("uid", userUID);
+
+
+        reference.document(id).set(map);
+
     }
 }

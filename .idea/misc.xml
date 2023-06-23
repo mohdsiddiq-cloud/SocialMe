@@ -21,12 +21,21 @@
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/drawable/ic_person.xml" value="0.14166666666666666" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/drawable/ic_search.xml" value="0.14166666666666666" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/drawable/ic_send.xml" value="0.14166666666666666" />
+        <entry key="..\:/my_android_project/socialMe/app/src/main/res/drawable/ic_send_white.xml" value="0.7428571428571429" />
+        <entry key="..\:/my_android_project/socialMe/app/src/main/res/drawable/left_chat.xml" value="0.1925925925925926" />
+        <entry key="..\:/my_android_project/socialMe/app/src/main/res/drawable/right_chat.xml" value="0.7428571428571429" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/drawable/text_box.xml" value="0.14166666666666666" />
+        <entry key="..\:/my_android_project/socialMe/app/src/main/res/drawable/text_box_edit.xml" value="1.5857142857142856" />
+        <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/activity_chat.xml" value="0.22554347826086957" />
+        <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/activity_chat_user.xml" value="0.22554347826086957" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/activity_fragment_replace.xml" value="0.12916666666666668" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/activity_main.xml" value="0.2266881028938907" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/activity_post_view.xml" value="0.25677083333333334" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/activity_replacer.xml" value="0.12552083333333333" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/activity_splash.xml" value="0.10400000000000001" />
+        <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/activity_story_add.xml" value="0.24954710144927536" />
+        <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/chat_items.xml" value="0.22554347826086957" />
+        <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/chat_user_items.xml" value="0.75" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/comment_item.xml" value="0.25677083333333334" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/fragment_add.xml" value="0.4" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/fragment_comment.xml" value="0.25677083333333334" />
@@ -40,7 +49,9 @@
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/home_item.xml" value="0.264" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/image_items.xml" value="1.2220394736842106" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/loading_dialog.xml" value="0.12552083333333333" />
+        <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/notification_items.xml" value="0.22554347826086957" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/profile_image_item.xml" value="0.25677083333333334" />
+        <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/stories_layout.xml" value="0.24954710144927536" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/layout/user_item.xml" value="0.136" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.26871794871794874" />
         <entry key="..\:/my_android_project/socialMe/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.26871794871794874" />
