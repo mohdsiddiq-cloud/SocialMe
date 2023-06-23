@@ -72,7 +72,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/deschi"
+        android:id="@+id/likecount"
         android:layout_below="@+id/ll1"
         android:textStyle="bold"
         android:paddingStart="8dp"
@@ -82,8 +82,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/likecount"
-        android:layout_below="@+id/deschi"
+        android:id="@+id/deschi"
+        android:layout_below="@+id/likecount"
         android:textStyle="bold"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"

@@ -12,8 +12,8 @@
         android:layout_width="62dp"
         android:layout_height="62dp"
         android:src="@color/black"
-        app:civ_border_color="@color/colorGreenMid"
-        app:civ_border_width="3dp" />
+        app:civ_border_color="@color/main"
+        app:civ_border_width="1dp" />
 
     <TextView
         android:id="@+id/nameTV"
@@ -22,11 +22,9 @@
         android:layout_marginStart="4dp"
         android:layout_toStartOf="@id/timeTv"
         android:layout_toEndOf="@id/profileImage"
-        android:text="Marsad"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold" />
-
 
     <TextView
         android:id="@+id/messageTV"
@@ -36,7 +34,6 @@
         android:layout_marginStart="4dp"
         android:layout_toStartOf="@id/messageCountTV"
         android:layout_toEndOf="@id/profileImage"
-        android:text="This is message"
         android:textColor="@color/colorGreyDark" />
 
     <TextView

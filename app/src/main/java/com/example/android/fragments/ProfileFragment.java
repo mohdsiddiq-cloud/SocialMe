@@ -11,6 +11,7 @@ import static com.example.android.utils.Constants.PREF_URL;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -21,6 +22,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -96,7 +98,7 @@ public class ProfileFragment extends Fragment{
     private LinearLayout countLayout;
     private String userUID;
     private FirestoreRecyclerAdapter<PostImageModel, PostImageHolder> adapter;
-    private ImageButton editProfileButton;
+    private ImageButton editProfileButton,signOutButton;
     boolean isFollowed;
     DocumentReference userRef,myRef;
     List<Object> followerList,followingList,followingList_2;
@@ -265,6 +267,37 @@ public class ProfileFragment extends Fragment{
             public void onClick(View view) {
                 queryChat();
             }
+        });
+
+        signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Sign Out");
+                    builder.setMessage("Are you sure you want to sign out?");
+
+                    builder.setPositiveButton("Sign Out", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            performSignOut();
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Cancel sign out operation
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+                private void performSignOut() {
+                    FirebaseAuth.getInstance().signOut();
+                    Intent intent=new Intent(getContext(),MainActivity.class);
+                    startActivity(intent);
+                }
         });
     }
     void queryChat() {
@@ -466,6 +499,7 @@ public class ProfileFragment extends Fragment{
         followingCount=view.findViewById(R.id.followingCount);
         postCount= view.findViewById(R.id.postCount);
         profileImage=view.findViewById(R.id.profileImage);
+        signOutButton=view.findViewById(R.id.signOutButton);
         followBtn=view.findViewById(R.id.followbtn);
         recyclerView=view.findViewById(R.id.recyclerViewpf);
         countLayout= view.findViewById(R.id.followlayout);
@@ -512,8 +546,6 @@ public class ProfileFragment extends Fragment{
 
 
     }
-
-
 
 
     private class PostImageHolder extends RecyclerView.ViewHolder{

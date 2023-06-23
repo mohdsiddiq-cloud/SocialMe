@@ -46,7 +46,7 @@ public class HomeFragment extends Fragment {
     private FirebaseUser user;
     private final MutableLiveData<Integer> commentCount= new MutableLiveData<>();
     RecyclerView storyRecyclerView;
-
+    Activity activity;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -57,24 +57,28 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         return inflater.inflate(R.layout.fragment_home, container, false);
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        activity = getActivity();
         init(view);
         list=new ArrayList<>();
         homeAdapter=new HomeAdapter(list,getActivity());
         recyclerView.setAdapter(homeAdapter);
-
+        list.clear();
         loadDataFromFirestore();
 
         homeAdapter.OnPressed(new HomeAdapter.OnPressed() {
             @Override
             public void onLiked(int position, String id,String uid,List<String> likeList,boolean isChecked) {
-                DocumentReference reference = FirebaseFirestore.getInstance().collection("Users")
-                        .document(uid).collection("Post Images").document(id);
+                DocumentReference reference = FirebaseFirestore.getInstance()
+                        .collection("Users")
+                        .document(uid)
+                        .collection("Post Images")
+                        .document(id);
                 if(likeList.contains(user.getUid())) {
                     likeList.remove(user.getUid());
                 }
@@ -89,20 +93,18 @@ public class HomeFragment extends Fragment {
             @Override
             public void setCommentCount(TextView textView) {
 
-                Activity activity = getActivity();
-                assert activity != null;
                 commentCount.observe((LifecycleOwner) activity, integer -> {
                     assert commentCount.getValue() != null;
                     if(commentCount.getValue()==0)
                         textView.setVisibility(View.GONE);
-                    else
-                        textView.setVisibility(View.VISIBLE);
-                    StringBuilder builder = new StringBuilder();
-                    builder.append("See all")
-                            .append(commentCount.getValue())
-                            .append(" comments");
-
-                    textView.setText(builder);
+//                    else
+//                        textView.setVisibility(View.VISIBLE);
+//                    StringBuilder builder = new StringBuilder();
+//                    builder.append("See all ")
+//                            .append(commentCount.getValue())
+//                            .append(" comments");
+//
+//                    textView.setText(builder);
                 });
 
             }
@@ -118,10 +120,7 @@ public class HomeFragment extends Fragment {
 
 
     private void loadDataFromFirestore() {
-        if (user == null) {
-            Log.d("Error: ", "User is null");
-            return;
-        }
+
         final DocumentReference reference=FirebaseFirestore.getInstance().collection("Users")
                 .document(user.getUid());
         final CollectionReference collectionReference=FirebaseFirestore.getInstance().collection("Users");
@@ -136,10 +135,12 @@ public class HomeFragment extends Fragment {
                     return;
 
                 List<String> uidList= (List<String>) value.get("following");
+                uidList.add(user.getUid());
                 if(uidList==null || uidList.isEmpty())
                     return;
 
-                    collectionReference.whereIn("uid", uidList).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    collectionReference.whereIn("uid", uidList)
+                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @Override
                         public void onEvent(@Nullable QuerySnapshot value1, @Nullable FirebaseFirestoreException error1) {
                             if (error1 != null) {
@@ -148,7 +149,7 @@ public class HomeFragment extends Fragment {
                             }
                             if(value1==null)
                                 return;
-
+                            list.clear();
                             for (QueryDocumentSnapshot snapshot : value1) {
                                 snapshot.getReference().collection("Post Images")
                                         .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -160,13 +161,12 @@ public class HomeFragment extends Fragment {
                                                 }
                                                 if(value2==null)
                                                     return;
-                                                list.clear();
 
-                                                for (QueryDocumentSnapshot snapshot2 : value2) {
+                                                for (final QueryDocumentSnapshot snapshot2 : value2) {
                                                     if (!snapshot2.exists())
                                                         return;
                                                     HomeModel model = snapshot2.toObject(HomeModel.class);
-                                                    Log.e("My name", model.getUid().toString() );
+
                                                     list.add(new HomeModel(
                                                             model.getName(),
                                                             model.getProfileImage(),
@@ -177,7 +177,8 @@ public class HomeFragment extends Fragment {
                                                             model.getTimeStamp(),
                                                             model.getLikes()
                                                     ));
-                                                    snapshot2.getReference().collection("Comments").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    snapshot2.getReference().collection("Comments")
+                                                            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                             if(task.isSuccessful()){
@@ -192,10 +193,11 @@ public class HomeFragment extends Fragment {
                                                     });
                                                 }
                                                 homeAdapter.notifyDataSetChanged();
-
                                             }
+
                                         });
                             }
+
                         }
                     });
                 }

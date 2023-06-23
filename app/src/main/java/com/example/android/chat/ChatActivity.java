@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.android.MainActivity;
 import com.example.android.Model.ChatModel;
 import com.example.android.adapter.ChatAdapter;
 import com.example.android.socialme.R;
@@ -57,6 +58,8 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
 
     }
 
@@ -158,7 +161,10 @@ public class ChatActivity extends AppCompatActivity {
                     boolean isOnline = Boolean.TRUE.equals(value.getBoolean("online"));
                     status.setText(isOnline ? "Online" : "Offline");
 
-                    Glide.with(getApplicationContext()).load(value.getString("profileImage")).into(imageView);
+                    Glide.with(getApplicationContext())
+                            .load(value.getString("profileImage"))
+                            .placeholder(R.drawable.ic_baseline_account_circle_24)
+                            .into(imageView);
 
                     name.setText(value.getString("name"));
 

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -59,9 +63,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder>{
     @Override
     public void onBindViewHolder(@NonNull HomeHolder holder, int position) {
         FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
-
         holder.userName.setText(list.get(position).getName());
-        holder.time.setText(""+list.get(position).getTimeStamp());
+        holder.time.setText(calculateTime(list.get(position).getTimeStamp()));
         List<String> likeList= list.get(position).getLikes();
         int count=likeList.size();
         if(count==0){
@@ -99,6 +102,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder>{
                 list.get(position).getImageUrl()
         );
 
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    String calculateTime(Date date) {
+        long millis = date.toInstant().toEpochMilli();
+        return DateUtils.getRelativeTimeSpanString(millis, System.currentTimeMillis(), 60000, DateUtils.FORMAT_ABBREV_TIME).toString();
     }
 
     @Override
